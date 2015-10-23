@@ -13,6 +13,7 @@
 
 @interface LogoutViewController ()
 @property (strong, nonatomic) UIImageView *logoImageView;
+@property (nonatomic, strong) UIButton *btnBack;
 @property (nonatomic, strong) UILabel *lblLogout;
 @property (nonatomic, strong) UITextField *txtEmail;
 @property (nonatomic, strong) UITextField *txtPassword;
@@ -28,6 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:COLOR_THEME];
+    [self.view addSubview:self.btnBack];
     [self.view addSubview:self.logoImageView];
     [self.view addSubview:self.lblLogout];
     [self.view addSubview:self.txtEmail];
@@ -43,6 +45,15 @@
 }
 
 #pragma mark - Accessor
+-(UIButton*)btnBack{
+    if(!_btnBack){
+        _btnBack = [[UIButton alloc] initWithFrame:CGRectMake(30, 30, 50, 50)];
+        [_btnBack setImage:[UIImage imageNamed:@"backbutton.png"] forState:UIControlStateNormal];
+        [_btnBack addTarget:self action:@selector(backButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _btnBack;
+}
+
 -(UIImageView *)logoImageView{
     if(!_logoImageView){
         UIImage *logo = [UIImage imageNamed:@"logo_echo.png"];
@@ -145,10 +156,13 @@
         UserDM *user = [[UserDM alloc] init];
         user.email = email;
         user.password = password;
-        _appDelegate.currentUser = user;
         
         [self signOutUser:user];
     }
+}
+
+-(void)backButtonAction:(id)sender{
+    [_appDelegate launchHomeScreen];
 }
 
 #pragma mark - Methods

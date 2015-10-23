@@ -37,6 +37,7 @@
 - (void)logoutUser;
 - (void)launchLoadingScreen;
 - (void)launchThankYouScreen;
+- (void)launchLogoutScreen;
 
 @property (nonatomic) BOOL reachable;
 @end

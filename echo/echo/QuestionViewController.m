@@ -36,6 +36,10 @@
     [self.view setBackgroundColor:COLOR_THEME];
     [self.view addSubview:self.activityIndicator];
     [self.view addSubview:self.lblQuestion];
+    
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeLeft];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -157,7 +161,7 @@
                          }
                          if(answer.positionID == 2){
                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
-                             self.answer2.tag = answer.answerID;
+                            self.answer2.tag = answer.answerID;
                          }
                      }
                      
@@ -190,6 +194,7 @@
 -(void)btnSubmitAction:(UIButton*)sender{
     UIButton *button = (UIButton *)sender;
     NSInteger tagValue = button.tag;
+    NSLog(@"ACCESS %i", tagValue);
     [_appDelegate launchLoadingScreen];
     double delayInSeconds = 3.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -197,10 +202,14 @@
         [_appDelegate launchThankYouScreen];
     });
     
-
     _echoAPI = [[EchoAPI alloc]init];
     [_echoAPI postAnswer:tagValue
               completion: ^ (NSDictionary *response)
      {}];
+}
+
+- (void)swipeLeft:(UISwipeGestureRecognizer *)swipeRecogniser
+{
+    [_appDelegate launchLogoutScreen];
 }
 @end

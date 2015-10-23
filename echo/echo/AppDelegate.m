@@ -147,6 +147,10 @@
     self.window.rootViewController = self.thankYouPage;
 }
 
+-(void)launchLogoutScreen{
+    self.window.rootViewController = self.logoutPage;
+}
+
 - (void)logoutUser
 {
     
