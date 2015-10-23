@@ -12,8 +12,12 @@
 #import "AppDelegate.h"
 #import "QuestionDM.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <iAd/iAd.h>
 
-@interface QuestionViewController ()
+@interface QuestionViewController () <ADBannerViewDelegate>{
+    BOOL _bannerIsVisible;
+    ADBannerView *_adBanner;
+}
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) EchoAPI *echoAPI;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
@@ -40,6 +44,9 @@
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.view addGestureRecognizer:swipeLeft];
+    
+    _adBanner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 50)];
+    _adBanner.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -211,5 +218,44 @@
 - (void)swipeLeft:(UISwipeGestureRecognizer *)swipeRecogniser
 {
     [_appDelegate launchLogoutScreen];
+}
+
+#pragma mark - Banner Ad Delegate
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner
+{
+    if (!_bannerIsVisible)
+    {
+        // If banner isn't part of view hierarchy, add it
+        if (_adBanner.superview == nil)
+        {
+            [self.view addSubview:_adBanner];
+        }
+        
+        [UIView beginAnimations:@"animateAdBannerOn" context:NULL];
+        
+        // Assumes the banner view is just off the bottom of the screen.
+        banner.frame = CGRectOffset(banner.frame, 0, -banner.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+        _bannerIsVisible = YES;
+    }
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+    NSLog(@"Failed to retrieve ad");
+    
+    if (_bannerIsVisible)
+    {
+        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+        
+        // Assumes the banner view is placed at the bottom of the screen.
+        banner.frame = CGRectOffset(banner.frame, 0, banner.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+        _bannerIsVisible = NO;
+    }
 }
 @end
