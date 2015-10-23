@@ -118,7 +118,7 @@
 }
 
 -(void)launchHomeScreen{
-   self.window.rootViewController = self.thankYouPage;
+   self.window.rootViewController = self.homePage;
 }
 
 -(void)launchLoginScreen:(BOOL)animated{

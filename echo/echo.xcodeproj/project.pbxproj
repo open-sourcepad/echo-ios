@@ -23,6 +23,7 @@
 		E699B5861BDA3D00001B01EA /* ThankYouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E699B5851BDA3D00001B01EA /* ThankYouViewController.m */; };
 		E699B5891BDA46B1001B01EA /* QuestionDM.m in Sources */ = {isa = PBXBuildFile; fileRef = E699B5881BDA46B1001B01EA /* QuestionDM.m */; };
 		E699B58C1BDA4AE9001B01EA /* AnswerDM.m in Sources */ = {isa = PBXBuildFile; fileRef = E699B58B1BDA4AE9001B01EA /* AnswerDM.m */; };
+		E6B09EA31BDA5C2600CAEDDD /* DetailDM.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B09EA21BDA5C2600CAEDDD /* DetailDM.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		E699B5881BDA46B1001B01EA /* QuestionDM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionDM.m; sourceTree = "<group>"; };
 		E699B58A1BDA4AE9001B01EA /* AnswerDM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerDM.h; sourceTree = "<group>"; };
 		E699B58B1BDA4AE9001B01EA /* AnswerDM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerDM.m; sourceTree = "<group>"; };
+		E6B09EA11BDA5C2600CAEDDD /* DetailDM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailDM.h; sourceTree = "<group>"; };
+		E6B09EA21BDA5C2600CAEDDD /* DetailDM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailDM.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +181,8 @@
 				E699B5881BDA46B1001B01EA /* QuestionDM.m */,
 				E699B58A1BDA4AE9001B01EA /* AnswerDM.h */,
 				E699B58B1BDA4AE9001B01EA /* AnswerDM.m */,
+				E6B09EA11BDA5C2600CAEDDD /* DetailDM.h */,
+				E6B09EA21BDA5C2600CAEDDD /* DetailDM.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				E699B5781BDA22C1001B01EA /* LoginViewController.m in Sources */,
 				E699B57C1BDA2320001B01EA /* QuestionViewController.m in Sources */,
 				E699B5891BDA46B1001B01EA /* QuestionDM.m in Sources */,
+				E6B09EA31BDA5C2600CAEDDD /* DetailDM.m in Sources */,
 				E699B58C1BDA4AE9001B01EA /* AnswerDM.m in Sources */,
 				E699B5441BDA150A001B01EA /* main.m in Sources */,
 				E699B5831BDA2FD1001B01EA /* Helpers.m in Sources */,

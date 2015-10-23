@@ -15,5 +15,5 @@
 #pragma mark - public methods
 -(void)signInUser:(NSMutableDictionary *)params;
 -(void)getQuestions:(void (^)(NSDictionary *response)) completion;
--(void)postAnswer:(void (^)(NSDictionary *response)) completion;
+-(void)postAnswer:(int)answerID completion:(void (^)(NSDictionary *response)) completion;
 @end

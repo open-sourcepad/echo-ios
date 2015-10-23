@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AnswerDM.h"
+@class AnswerDM;
 
 @interface QuestionDM : NSObject
-@property (nonatomic) int questionID;
+@property (strong, nonatomic) NSArray *answerArray;
 @property (strong, nonatomic) NSString *questionDesc;
-@property (strong, nonatomic) NSArray *questionAnswers;
+@property (nonatomic) int questionID;
 
-+ (QuestionDM *)getQuestionFrom:(NSDictionary *)venueDict;
-+ (NSArray *)getQuestionsFrom:(NSArray *)array;
++ (QuestionDM *)getQuestionFrom:(NSDictionary *)questionDict;
++ (NSArray *)getQuestionsFrom:(NSDictionary *)detailDict;
 @end

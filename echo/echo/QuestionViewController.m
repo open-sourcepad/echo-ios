@@ -11,13 +11,18 @@
 #import "EchoAPI.h"
 #import "AppDelegate.h"
 #import "QuestionDM.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface QuestionViewController ()
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) EchoAPI *echoAPI;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) UILabel *lblQuestion;
+@property (nonatomic, strong) UIView *twoAnsView;
+@property (nonatomic, strong) UIView *threeAnsView;
 @property (nonatomic, strong) UIButton *answer1;
 @property (nonatomic, strong) UIButton *answer2;
+@property (nonatomic, strong) UIButton *answer3;
 @end
 
 @implementation QuestionViewController
@@ -29,6 +34,7 @@
     _echoAPI = [[EchoAPI alloc]init];
 
     [self.view setBackgroundColor:COLOR_THEME];
+    [self.view addSubview:self.activityIndicator];
     [self.view addSubview:self.lblQuestion];
 }
 
@@ -52,39 +58,135 @@
     return _lblQuestion;
 }
 
+-(UIView*)twoAnsView{
+    if(!_twoAnsView){
+        _twoAnsView = [[UIView alloc]initWithFrame:CGRectMake((self.view.frame.size.width/2) - 225, _lblQuestion.frame.origin.y + _lblQuestion.frame.size.height + 50, 450, self.view.frame.size.height/2)];
+        [_twoAnsView setBackgroundColor:[UIColor clearColor]];
+        [_twoAnsView addSubview:self.answer1];
+        [_twoAnsView addSubview:self.answer2];
+    }
+    return _twoAnsView;
+}
+
+-(UIView*)threeAnsView{
+    if(!_threeAnsView){
+        _threeAnsView = [[UIView alloc]initWithFrame:CGRectMake((self.view.frame.size.width/2) - 350, _lblQuestion.frame.origin.y + _lblQuestion.frame.size.height + 50, 700, self.view.frame.size.height/2)];
+        [_threeAnsView setBackgroundColor:[UIColor clearColor]];
+        [_threeAnsView addSubview:self.answer1];
+        [_threeAnsView addSubview:self.answer2];
+        [_threeAnsView addSubview:self.answer3];
+    }
+    return _threeAnsView;
+}
+
+- (UIActivityIndicatorView *)activityIndicator {
+    if(!_activityIndicator) {
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _activityIndicator.color = [UIColor whiteColor];
+        _activityIndicator.center = self.view.center;
+        _activityIndicator.hidesWhenStopped = YES;
+    }
+    return _activityIndicator;
+}
+
+-(UIButton*)answer1{
+    if(!_answer1){
+        _answer1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+        _answer1.backgroundColor = [UIColor whiteColor];
+        _answer1.clipsToBounds = YES;
+        _answer1.layer.cornerRadius = 200/2;
+        _answer1.layer.borderColor = [UIColor blackColor].CGColor;
+        _answer1.layer.borderWidth =1.0;
+        [_answer1 addTarget:self
+                     action:@selector(btnSubmitAction:)
+           forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _answer1;
+    
+}
+
+-(UIButton*)answer2{
+    if(!_answer2){
+        _answer2 = [[UIButton alloc] initWithFrame:CGRectMake(_answer1.frame.origin.x + _answer1.frame.size.width + 50, _answer1.frame.origin.y, 200, 200)];
+        _answer2.backgroundColor = [UIColor whiteColor];
+        _answer2.clipsToBounds = YES;
+        _answer2.layer.cornerRadius = 200/2;
+        _answer2.layer.borderColor = [UIColor blackColor].CGColor;
+        _answer2.layer.borderWidth =1.0;
+        [_answer2 addTarget:self
+                      action:@selector(btnSubmitAction:)
+            forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _answer2;
+}
+
+-(UIButton*)answer3{
+    if(!_answer3){
+        _answer3 = [[UIButton alloc] initWithFrame:CGRectMake(_answer2.frame.origin.x + _answer2.frame.size.width + 50, _answer2.frame.origin.y, 200, 200)];
+        _answer3.backgroundColor = [UIColor whiteColor];
+        _answer3.clipsToBounds = YES;
+        _answer3.layer.cornerRadius = 200/2;
+        _answer3.layer.borderColor = [UIColor blackColor].CGColor;
+        _answer3.layer.borderWidth =1.0;
+        [_answer3 addTarget:self
+                     action:@selector(btnSubmitAction:)
+           forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _answer3;
+}
+
 #pragma mark - Methods 
 -(void)getQuestion{
+    [self.activityIndicator startAnimating];
     [_echoAPI getQuestions:^ (NSDictionary *response)
      {
          [_appDelegate.questionArray removeAllObjects];
-         [_appDelegate.questionArray addObjectsFromArray:[NSMutableArray arrayWithArray:[QuestionDM getVenuesFrom:[response objectForKey:KEY_DATA]]]];
+         [_appDelegate.questionArray addObjectsFromArray:[QuestionDM getQuestionsFrom:[response objectForKey:KEY_DATA]]];
          dispatch_async(dispatch_get_main_queue(), ^{
-             if(_refreshControl.refreshing)
-                 [self performSelector:@selector(stopRefresh:) withObject:_refreshControl afterDelay:REFRESH_END_DELAY];
-             _gridLoaded = YES;
-             [self.collectionView reloadData];
+             for(QuestionDM *question in _appDelegate.questionArray){
+                [self.lblQuestion setText:question.questionDesc];
+                 if([question.answerArray count] == 2){
+                     for(AnswerDM *answer in question.answerArray){
+                         NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: answer.imageUrl]];
+                         if([answer.positionID isEqual:@"1"])
+                           [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                         if([answer.positionID isEqual:@"2"])
+                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                     }
+                     [self.view addSubview:self.twoAnsView];
+                 }else if([question.answerArray count] == 3){
+                     for(AnswerDM *answer in question.answerArray){
+                         NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: answer.imageUrl]];
+                         if([answer.positionID isEqual:@"1"])
+                             [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                         if([answer.positionID isEqual:@"2"])
+                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                         if([answer.positionID isEqual:@"3"])
+                             [self.answer3 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                     }
+                     [self.view addSubview:self.threeAnsView];
+                 }
+             }
              [self.activityIndicator stopAnimating];
              [self.view setUserInteractionEnabled:YES];
-         });
-     }];
-
-}
-
--(void)loadVenues{
-    _gridLoaded = YES;
-    [_urbnEye getGridVenues:_pageGrid+1 completion:^ (NSDictionary *response)
-     {
-         [_appDelegate.venues removeAllObjects];
-         [_appDelegate.venues addObjectsFromArray:[NSMutableArray arrayWithArray:[VenueDM getVenuesFrom:[response objectForKey:KEY_DATA]]]];
-         dispatch_async(dispatch_get_main_queue(), ^{
-             if(_refreshControl.refreshing)
-                 [self performSelector:@selector(stopRefresh:) withObject:_refreshControl afterDelay:REFRESH_END_DELAY];
-             _gridLoaded = YES;
-             [self.collectionView reloadData];
              [self.activityIndicator stopAnimating];
-             [self.view setUserInteractionEnabled:YES];
          });
      }];
 }
 
+-(void)btnSubmitAction:(id)sender{
+//    [_echoAPI postAnswer:_selectedVenue.venueId
+//                  completion: ^ (NSDictionary *response)
+//     {
+//        [self.navigationController pushViewController:_appDelegate.thankYouPage animated:YES];
+//     }
+//     ];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_appDelegate.thankYouPage];
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navController animated:YES completion:nil];
+    _appDelegate.thankYouPage = nil;
+    navController = nil;
+}
 @end

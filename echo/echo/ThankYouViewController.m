@@ -20,12 +20,14 @@
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:COLOR_THEME];
     [self.view addSubview:self.imageView];
+    [self.navigationController.navigationBar setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 #pragma mark - Methods
 - (UIImageView*)imageView{
     if(!_imageView){

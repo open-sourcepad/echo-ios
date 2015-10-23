@@ -12,7 +12,8 @@
 #pragma mark - Defaults
 #define DEFAULT_CURRENT_USER        @"current user"
 #define API_SIGNIN                  @"api/sign_in"
-#define API_GET_QUESTIONS           @"api/questions"
+#define API_GET_QUESTION            @"api/question"
+#define API_POST_ANSWER             @"api/feedback"
 
 #pragma mark - Colors
 #define RGB(r,g,b)                  [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
@@ -34,9 +35,13 @@
 #define KEY_PASSWORD                @"password"
 #define KEY_ERRORS                  @"errors"
 #define KEY_ERROR_MESSAGE           @"message"
-#define KEY_ANSWER_IMAGE_URL        @""
-#define KEY_ANSWER_DESC             @""
-#define KEY_QUESTION_DESC           @""
+#define KEY_IMAGE_URL               @"image_url"
+#define KEY_DESCRIPTION             @"description"
+#define KEY_QUESTION                @"question"
+#define KEY_ID                      @"id"
+#define KEY_ANSWER_ID               @"answer_id"
+#define KEY_ANSWERS                 @"answers"
+#define KEY_POSITION                @"position"
 #define ALERT_CONNECTION_ERROR      @"The Internet connection appears to be offline."
 #define KEY_SUCCESS                 @"success"
 #define ALERT_ERROR                 @"An error occurred."

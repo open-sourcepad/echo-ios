@@ -55,8 +55,9 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSMutableDictionary *param = [[NSMutableDictionary alloc]init];
     [param setObject:appDelegate.currentUser.accessToken forKey:KEY_AUTH_TOKEN];
+    [param setObject:appDelegate.currentUser.userID forKey:KEY_UID];
     if([appDelegate reachable]){
-        [self.sessionManager GET: API_GET_QUESTIONS
+        [self.sessionManager GET: API_GET_QUESTION
                       parameters: param
                          success: ^ (NSURLSessionDataTask *task, id responseObject)
          {
@@ -79,12 +80,49 @@
                                     completion(nil);
                                 });
                  NSLog(@"failed error: %@",error);
-                 [Helpers alertStatus:ALERT_ERROR :@"" :0];
+                 [Helpers alertStatus:@"No available questions." :@"" :0];
              }
          }];
     }else{
         [Helpers alertStatus:[NSString stringWithFormat:@"%@", ALERT_CONNECTION_ERROR]:@"" :0];
     }
 
+}
+
+-(void)postAnswer:(int)answerID completion:(void (^)(NSDictionary *))completion{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if([appDelegate reachable]){
+        NSMutableDictionary *param = [[NSMutableDictionary alloc]init];
+        [param setObject:[NSNumber numberWithInt:answerID] forKey:KEY_ANSWER_ID];
+        [self.sessionManager POST: API_POST_ANSWER
+                       parameters: param
+                          success: ^ (NSURLSessionDataTask *task, id responseObject)
+         {
+             NSMutableDictionary *resultDict = responseObject;
+             if (completion)
+             {
+                 NSLog(@"RESULT: %@",resultDict);
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion(resultDict);
+                                });
+             }
+         }
+                          failure: ^ (NSURLSessionDataTask *task, NSError *error)
+         {
+             if (completion)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    completion(nil);
+                                });
+                 NSLog(@"failed error: %@",error);
+                 [Helpers alertStatus:ALERT_TRY_AGAIN :ALERT_ERROR :0];
+             }
+         }];
+        
+    }else{
+        [Helpers alertStatus:[NSString stringWithFormat:@"%@", ALERT_CONNECTION_ERROR]:@"" :0];
+    }
 }
 @end

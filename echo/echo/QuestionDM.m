@@ -7,41 +7,32 @@
 //
 
 #import "QuestionDM.h"
+#import "AnswerDM.h"
+#import "DetailDM.h"
 #import "Constants.h"
 
 @implementation QuestionDM
-@synthesize questionID;
-@synthesize questionDesc;
-@synthesize questionAnswers;
+@synthesize answerArray;
 
 + (QuestionDM *)getQuestionFrom:(NSDictionary *)questionDict
 {
     QuestionDM *question = [[QuestionDM alloc] init];
-    question.questionID = [[questionDict objectForKey:KEY_UID] intValue];
-    question.questionDesc = [questionDict objectForKey:KEY_QUESTION_DESC];
-    question.questionAnswers = [questionDict objectForKey:KEY_ADDRESS];
+
+    NSDictionary *questDetail = [questionDict objectForKey:KEY_QUESTION];
+    question.questionID = [[questDetail valueForKey:KEY_ID]intValue];
+    question.questionDesc = [questDetail objectForKey:KEY_DESCRIPTION];
+
     //Question Answers
-    NSArray *questionAnswers = [questionDict objectForKey:KEY_VENUE_STREAM];
-    questionAnswers.streamsArray = [NSMutableArray arrayWithArray:[StreamDM getStreamsFrom:streams]];
-    
-    if([venueDict objectForKey:KEY_VENUE_DISTANCE_KM] != [NSNull null])
-        venue.distanceKM = [[venueDict objectForKey:KEY_VENUE_DISTANCE_KM] floatValue];
-    if([venueDict objectForKey:KEY_VENUE_DISTANCE_MI] != [NSNull null])
-        venue.distanceMI = [[venueDict objectForKey:KEY_VENUE_DISTANCE_MI] floatValue];
-    if([venueDict objectForKey:KEY_YELP_LATITUDE] != [NSNull null])
-        venue.yelpLatitude = [[venueDict objectForKey:KEY_YELP_LATITUDE] floatValue];
-    if([venueDict objectForKey:KEY_YELP_LONGITUDE] != [NSNull null])
-        venue.yelpLongitude = [[venueDict objectForKey:KEY_YELP_LONGITUDE] floatValue];
-    
-    return venue;
+    NSArray *answersArray = [questionDict objectForKey:KEY_ANSWERS];
+    question.answerArray = [NSMutableArray arrayWithArray:[AnswerDM getAnswersFrom:answersArray]];
+    return question;
 }
 
-+ (NSArray *)getVenuesFrom:(NSArray *)array
++ (NSArray *)getQuestionsFrom:(NSDictionary *)detailDict
 {
-    NSMutableArray *venues = [[NSMutableArray alloc] init];
-    for(NSDictionary *venueDict in array)
-        [venues addObject:[VenueDM getVenueFrom:venueDict]];
-    return venues;
+    NSMutableArray *questions = [[NSMutableArray alloc] init];
+    [questions addObject:[QuestionDM getQuestionFrom:detailDict]];
+    return questions;
 }
 
 @end

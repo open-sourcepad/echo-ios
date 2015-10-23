@@ -13,9 +13,10 @@
 + (AnswerDM *)getAnswerFrom:(NSDictionary *)answerDict
 {
     AnswerDM *answer = [[AnswerDM alloc] init];
-    answer.imageUrl = [answerDict objectForKey:KEY_ANSWER_IMAGE_URL];
-    answer.ansDesc = [answerDict objectForKey:KEY_ANSWER_DESC];
-    
+    answer.answerID = [[answerDict valueForKey:KEY_ID]intValue];
+    answer.imageUrl = [answerDict objectForKey:KEY_IMAGE_URL];
+    answer.ansDesc = [answerDict objectForKey:KEY_DESCRIPTION];
+    answer.positionID = [answerDict objectForKey:KEY_POSITION];
     return answer;
 }
 
