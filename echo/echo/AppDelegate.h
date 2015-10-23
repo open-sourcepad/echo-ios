@@ -11,6 +11,8 @@
 #import "LoginViewController.h"
 #import "QuestionViewController.h"
 #import "ThankYouViewController.h"
+#import "LogoutViewController.h"
+#import "LoadingViewController.h"
 #include<unistd.h>
 #include<netdb.h>
 
@@ -26,11 +28,15 @@
 @property (strong, nonatomic) LoginViewController *loginViewController;
 @property (strong, nonatomic) QuestionViewController *homePage;
 @property (strong, nonatomic) ThankYouViewController *thankYouPage;
+@property (strong, nonatomic) LogoutViewController *logoutPage;
+@property (strong, nonatomic) LoadingViewController *loadingPage;
 
 #pragma mark - Public Methods
 - (void)launchHomeScreen;
 - (void)launchLoginScreen:(BOOL)animated;
 - (void)logoutUser;
+- (void)launchLoadingScreen;
+- (void)launchThankYouScreen;
 
 @property (nonatomic) BOOL reachable;
 @end

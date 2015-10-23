@@ -1,5 +1,5 @@
 //
-//  ThankYouViewController.h
+//  LogoutViewController.h
 //  echo
 //
 //  Created by Ayra Panganiban on 10/23/15.
@@ -8,5 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ThankYouViewController : UIViewController
+@interface LogoutViewController : UIViewController<UITextFieldDelegate>
+
 @end

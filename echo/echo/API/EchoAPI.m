@@ -125,4 +125,21 @@
         [Helpers alertStatus:[NSString stringWithFormat:@"%@", ALERT_CONNECTION_ERROR]:@"" :0];
     }
 }
+
+-(void)signOutUser:(NSMutableDictionary *)params;{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [params setObject:appDelegate.currentUser.accessToken forKey:KEY_AUTH_TOKEN];
+    [params setObject:appDelegate.currentUser.userID forKey:KEY_UID];
+    if([appDelegate reachable]){
+        [self.sessionManager POST:API_SIGNOUT parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"RESPONSE: %@", responseObject);
+            [appDelegate logoutUser];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"failed error: %@",error.localizedDescription);
+        }];
+    }else{
+        [Helpers alertStatus:[NSString stringWithFormat:@"%@", ALERT_CONNECTION_ERROR]:@"" :0];
+    }
+    
+}
 @end

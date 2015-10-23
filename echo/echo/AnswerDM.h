@@ -12,7 +12,7 @@
 @property (nonatomic) int answerID;
 @property (strong,nonatomic) NSString *imageUrl;
 @property (strong,nonatomic) NSString *ansDesc;
-@property (strong,nonatomic) NSString *positionID;
+@property (nonatomic) int positionID;
 + (AnswerDM *)getAnswerFrom:(NSDictionary *)answerDict;
 + (NSArray *)getAnswersFrom:(NSArray *)array;
 @end

@@ -16,4 +16,5 @@
 -(void)signInUser:(NSMutableDictionary *)params;
 -(void)getQuestions:(void (^)(NSDictionary *response)) completion;
 -(void)postAnswer:(int)answerID completion:(void (^)(NSDictionary *response)) completion;
+-(void)signOutUser:(NSMutableDictionary *)params;;
 @end

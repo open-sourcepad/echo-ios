@@ -148,45 +148,59 @@
              for(QuestionDM *question in _appDelegate.questionArray){
                 [self.lblQuestion setText:question.questionDesc];
                  if([question.answerArray count] == 2){
-                     for(AnswerDM *answer in question.answerArray){
-                         NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: answer.imageUrl]];
-                         if([answer.positionID isEqual:@"1"])
-                           [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
-                         if([answer.positionID isEqual:@"2"])
-                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
-                     }
                      [self.view addSubview:self.twoAnsView];
-                 }else if([question.answerArray count] == 3){
                      for(AnswerDM *answer in question.answerArray){
                          NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: answer.imageUrl]];
-                         if([answer.positionID isEqual:@"1"])
-                             [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
-                         if([answer.positionID isEqual:@"2"])
-                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
-                         if([answer.positionID isEqual:@"3"])
-                             [self.answer3 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                         if(answer.positionID == 1){
+                           [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                            self.answer1.tag = answer.answerID;
+                         }
+                         if(answer.positionID == 2){
+                            [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                             self.answer2.tag = answer.answerID;
+                         }
                      }
+                     
+                 }else if([question.answerArray count] == 3){
                      [self.view addSubview:self.threeAnsView];
+                     for(AnswerDM *answer in question.answerArray){
+                         NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: answer.imageUrl]];
+                         if(answer.positionID == 1){
+                             [self.answer1 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                             self.answer1.tag = answer.answerID;
+                         }
+                         if(answer.positionID == 2){
+                             [self.answer2 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                             self.answer2.tag = answer.answerID;
+                         }
+                         if(answer.positionID == 3){
+                             [self.answer3 setImage:[UIImage imageWithData:imageData] forState:UIControlStateNormal];
+                             self.answer3.tag = answer.answerID;
+                         }
+                     }
+                     
                  }
              }
              [self.activityIndicator stopAnimating];
              [self.view setUserInteractionEnabled:YES];
-             [self.activityIndicator stopAnimating];
          });
      }];
 }
 
--(void)btnSubmitAction:(id)sender{
-//    [_echoAPI postAnswer:_selectedVenue.venueId
-//                  completion: ^ (NSDictionary *response)
-//     {
-//        [self.navigationController pushViewController:_appDelegate.thankYouPage animated:YES];
-//     }
-//     ];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_appDelegate.thankYouPage];
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:navController animated:YES completion:nil];
-    _appDelegate.thankYouPage = nil;
-    navController = nil;
+-(void)btnSubmitAction:(UIButton*)sender{
+    UIButton *button = (UIButton *)sender;
+    NSInteger tagValue = button.tag;
+    [_appDelegate launchLoadingScreen];
+    double delayInSeconds = 3.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [_appDelegate launchThankYouScreen];
+    });
+    
+
+    _echoAPI = [[EchoAPI alloc]init];
+    [_echoAPI postAnswer:tagValue
+              completion: ^ (NSDictionary *response)
+     {}];
 }
 @end

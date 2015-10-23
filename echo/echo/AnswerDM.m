@@ -16,7 +16,7 @@
     answer.answerID = [[answerDict valueForKey:KEY_ID]intValue];
     answer.imageUrl = [answerDict objectForKey:KEY_IMAGE_URL];
     answer.ansDesc = [answerDict objectForKey:KEY_DESCRIPTION];
-    answer.positionID = [answerDict objectForKey:KEY_POSITION];
+    answer.positionID = [[answerDict valueForKey:KEY_POSITION]intValue];
     return answer;
 }
 

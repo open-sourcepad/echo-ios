@@ -91,11 +91,25 @@
     return _loginViewController;
 }
 
+-(LogoutViewController *)logoutPage{
+    if(!_logoutPage){
+        _logoutPage = [[LogoutViewController alloc] init];
+    }
+    return _logoutPage;
+}
+
 -(ThankYouViewController *)thankYouPage{
     if(!_thankYouPage){
         _thankYouPage = [[ThankYouViewController alloc] init];
     }
     return _thankYouPage;
+}
+
+-(LoadingViewController *)loadingPage{
+    if(!_loadingPage){
+        _loadingPage = [[LoadingViewController alloc] init];
+    }
+    return _loadingPage;
 }
 
 - (NSMutableArray *)questionArray {
@@ -125,6 +139,14 @@
     self.window.rootViewController = self.loginViewController;
 }
 
+-(void)launchLoadingScreen{
+    self.window.rootViewController = self.loadingPage;
+}
+
+-(void)launchThankYouScreen{
+    self.window.rootViewController = self.thankYouPage;
+}
+
 - (void)logoutUser
 {
     
@@ -132,12 +154,12 @@
     _currentUser = nil;
     _currentUser = [[UserDM alloc] init];
     
-    // Reset navigation controllers
-    
     // Reset view controllers
     _loginViewController = nil;
     _homePage = nil;
     _thankYouPage = nil;
+    _logoutPage = nil;
+    _loadingPage = nil;
     
     // Clear Data
     

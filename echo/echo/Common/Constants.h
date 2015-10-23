@@ -14,10 +14,12 @@
 #define API_SIGNIN                  @"api/sign_in"
 #define API_GET_QUESTION            @"api/question"
 #define API_POST_ANSWER             @"api/feedback"
+#define API_SIGNOUT                 @"api/sign_out"
 
 #pragma mark - Colors
 #define RGB(r,g,b)                  [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 #define COLOR_THEME                 RGB(253,216,79)
+#define COLOR_LOADER                RGB(253,214,72)
 
 #pragma mark - Fonts
 #define FONT_NORMAL_16              [UIFont fontWithName:@"HelveticaNeue" size:16.0]
